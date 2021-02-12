@@ -1,10 +1,12 @@
 # OSEP 1: Purpose & Process
 
-**Author(s)**: @jamesturk
-**Implementer(s)**: @jamesturk
-**Status**: Draft
-**Created**: 2021-02-11
-**Updated**: 2021-02-11
+|                    |            |
+|--------------------|------------|
+| **Author(s)**      | @jamesturk |
+| **Implementer(s)** | @jamesturk |
+| **Status**         |   Draft    |
+| **Created**        | 2021-02-11 |
+| **Updated**        | 2021-02-11 | 
 
 ---
 
@@ -18,7 +20,7 @@ Provide a formal mechanism by which major changes to Open States can be agreed u
 
 A proposal should have this structure:
 
-1. Short descriptive title (e.g. "Adding Effective Dates"), which is also in the filename (e.g. `007-adding-effective-dates.md`).
+1. **Short title** (e.g. "Adding Effective Dates"), which is also in the filename (e.g. `007-adding-effective-dates.md`).
 2. **Metadata**: listed at the top of the file, to include:
 	- **Author(s), Implementer(s)**  - these can be multiple project members, implementer can be blank initially.
 	- **Created, Updated**: Updated should be updated when substantial changes are adopted.

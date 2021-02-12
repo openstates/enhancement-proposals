@@ -1,10 +1,12 @@
 # OSEP #: [TITLE]
 
-**Author(s)**:
-**Implementer(s)**
-**Status**: Draft
-**Created**:
-**Updated**:
+|                    |            |
+|--------------------|------------|
+| **Author(s)**      | TODO |
+| **Implementer(s)** | TODO |
+| **Status**         |   Draft    |
+| **Created**        | TODO |
+| **Updated**        | TODO | 
 
 ---
 

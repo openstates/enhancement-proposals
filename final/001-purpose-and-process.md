@@ -5,6 +5,8 @@
 | **Author(s)**      | @jamesturk |
 | **Implementer(s)** | @jamesturk |
 | **Status**         |   Final    |
+| **Draft PR(s)**    |   n/a      |
+| **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/1 |
 | **Created**        | 2021-02-11 |
 | **Updated**        | 2021-02-11 | 
 
@@ -25,7 +27,8 @@ A proposal should have this structure:
 	- **Author(s), Implementer(s)**  - these can be multiple project members, implementer can be blank initially.
 	- **Created, Updated**: Updated should be updated when substantial changes are adopted.
 	- **Status**: Draft, Accepted, Rejected, Withdrawn, Final, Superseded
-	- **Requires, Replaces, Superseded-By**: all optional, but can be used to indicate relationships between proposals.
+	- **Draft PR**: Link to Draft PR discussion.
+	- **Approval PR**: Link to Approval PR discussion.
 3. **Abstract** - Concise summary of the proposal.
 4. **Specification** - Detailed description of how the proposal should work.
 5. **Rationale** - Explanation of why this would be a good idea.  The rationale should discuss considered alternatives and why they were rejected.

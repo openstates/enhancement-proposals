@@ -5,6 +5,8 @@
 | **Author(s)**      | TODO |
 | **Implementer(s)** | TODO |
 | **Status**         |   Draft    |
+| **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/TBD |
+| **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Created**        | TODO |
 | **Updated**        | TODO | 
 
@@ -22,7 +24,7 @@ TODO: Describe how the proposal will work.
 
 TODO: Explain the reason for this in detail.  Discuss alternatives considered.
 
-## Backwards Compatibility
+## Drawbacks
 
 TODO: Will this affect backwards compatibility in scrapers, the API, or the website?
 (It is ok to leave this blank in a draft if you aren't sure.)
@@ -30,6 +32,7 @@ TODO: Will this affect backwards compatibility in scrapers, the API, or the webs
 ## Implementation Plan
 
 TODO: How will this be done?  Are you volunteering to do it?  Do you want someone else to do it?
+(It is ok to leave this blank in a draft if you aren't sure.)
 
 ## Copyright
 

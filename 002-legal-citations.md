@@ -16,18 +16,25 @@
 
 A number of jurisidictions offer metadata to link bills to the sections of the legal code that they will alter, or to the chaptered laws. We should modify the bills model to allow scraping this data.
 
-Note: There are many different legal structures that can be altered by bills. In this document, "legal code" will be used as shorthand for "collection of laws or rules modified by a bill", rather than strictly codes/register entries/constitutions, etc.
+**Note**: There are many different legal structures that can be altered by bills. In this document, "legal code" will be used as shorthand for "collection of laws or rules modified by a bill" such as statutes, codes, slip laws, public laws, register entries, constitutions, etc.
 
 ## Specification
 
 Add 2 new underlying data structures as part of the bill model, a chapter citation and a legal citation.
 
-These will be accessed via three methods:
+These will be accessed via two methods:
 
 1. add_chapter()
 1. add_citation()
 
 ### Chapter Citation:
+
+Many jursdictions keep a running list of all the bills that have become law in a session,
+often with effective dates and redlines to aid legal researchers. These are generally known as 'chaptered laws', and may or may not also link to the state codes.
+
+[Example from MN](https://www.revisor.mn.gov/laws/2020/0/)
+
+#### Structure: 
 
 A ```list``` of 0+ chapter ```dict```s
 
@@ -44,7 +51,7 @@ Note that the "Chaptered Laws" of a given session, and a legal code that might h
 #### Examples
 
 [2019 WY HB 4](https://wyoleg.gov/Legislation/2019/HB0004)
-Chaptered to CH0024, Effective 7/1/2019
+Chaptered to CH0024 of 2019, Effective 7/1/2019
 
 ```python
 bill.add_chapter(
@@ -55,6 +62,8 @@ bill.add_chapter(
 ```
 
 ### Legal Citation
+
+#### Structure: 
 
 A ```list``` of 0+ Citation ```dict```s
 

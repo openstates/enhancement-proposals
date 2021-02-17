@@ -5,7 +5,7 @@
 | **Author(s)**      | Tim Showers |
 | **Implementer(s)** | Tim Showers |
 | **Status**         |   Draft    |
-| **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/TBD |
+| **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/9/ |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Created**        | 2020-02-17 |
 | **Updated**        | TODO | 
@@ -20,7 +20,7 @@ A number of jurisdictions offer metadata to link bills to the sections of the le
 
 ## Specification
 
-Add a underlying data structure for a legal citation to the bill model.
+Add an underlying data structure for one or more legal citations to the bill model.
 
 These will be accessed via a new method on the bill object:
 
@@ -152,7 +152,7 @@ Scraper writers add the functionality to states as desired. Tim would take the f
 ## Notes
 
 1. States that offer chapters post hoc -- DC, GA, US, WY, MN
-2. Projects that try to parse legal citations == [law-identifier](https://github.com/statedecoded/law-identifier), [citation-regexes](https://github.com/freelawproject/citation-regexes)
+2. Projects that try to parse legal citations: [law-identifier](https://github.com/statedecoded/law-identifier), [citation-regexes](https://github.com/freelawproject/citation-regexes)
 
 ## Copyright
 

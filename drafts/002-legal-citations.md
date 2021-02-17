@@ -45,7 +45,7 @@ A ```list``` of 0+ Citation ```dict```s
 Chaptered to CH0024 of 2019, Effective 7/1/2019
 
 ```python
-bill.add_chapter(
+bill.add_citation(
     "Wyoming Chapter Laws of 2019",
     "CH0024",
     type="chapter",

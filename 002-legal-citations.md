@@ -41,8 +41,8 @@ A ```list``` of 0+ chapter ```dict```s
 
 - **chapter** - string - The jurisdiction's chapter laws reference. 
 - **session** - string - The session or year of the chapter law.  
-- **effective** - **optional** datetimeoptional|string - effective date
-- **expiration** - **optional** datetimeoptional|string - expiration date
+- **effective** - **optional** datetimeoptional - effective date
+- **expiration** - **optional** datetimeoptional - expiration date
 - **url** - **optional** string - Link to the URL of the chapter law or the redlines.
 
 
@@ -70,8 +70,8 @@ A ```list``` of 0+ Citation ```dict```s
 - **publication** - string - The affected publication. e.g. "Minnesota Statutes", "California Public Utilities Code", "DC Register", "Constitution of Nevada". Note that these cover a wide variety of different types of law and rule making.
 - **citation** - string - The reference to the (sub)section of the publication. Formats and abbreviations vary widely.
 - **type** - enum [proposed, final] - whether the citation is a part of a pending bill, or a final affected section after the bill as been made into law. The list of proposed citations may not match the final list due to changes between bill versions.
-- **effective** - **optional** datetimeoptional|string - effective date
-- **expiration** - **optional** datetimeoptional|string - expiration date
+- **effective** - **optional** datetimeoptional - effective date
+- **expiration** - **optional** datetimeoptional - expiration date
 - **url** - **optional** string - Link to the URL of the affected code
 
 

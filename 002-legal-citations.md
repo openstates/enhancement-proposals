@@ -14,7 +14,7 @@
 
 ## Abstract
 
-A number of jurisidictions offer metadata to link bills to the sections of the legal code that they will alter, or to the chaptered laws. We should modify the bills model to allow scraping this data.
+A number of jurisdictions offer metadata to link bills to the sections of the legal code that they will alter, or to the chaptered laws. We should modify the bills model to allow scraping this data in a structured way.
 
 **Note**: There are many different legal structures that can be altered by bills. In this document, "legal code" will be used as shorthand for "collection of laws or rules modified by a bill" such as statutes, codes, slip laws, public laws, register entries, constitutions, etc.
 
@@ -29,7 +29,7 @@ These will be accessed via two methods:
 
 ### Chapter Citation:
 
-Many jursdictions keep a running list of all the bills that have become law in a session,
+Many jurisdictions keep a running list of all the bills that have become law in a session,
 often with effective dates and redlines to aid legal researchers. These are generally known as 'chaptered laws', and may or may not also link to the state codes.
 
 [Example from MN](https://www.revisor.mn.gov/laws/2020/0/)
@@ -40,7 +40,7 @@ A ```list``` of 0+ chapter ```dict```s
 
 
 - **chapter** - string - The jurisdiction's chapter laws reference. 
-- **session** - string - The session or year of the chapter law.  
+- **session** - string - The session or year of the chapter law. This may be distinct from the bill's "session", as some states split their chapter laws up by calendar year.
 - **effective** - **optional** datetimeoptional - effective date
 - **expiration** - **optional** datetimeoptional - expiration date
 - **url** - **optional** string - Link to the URL of the chapter law or the redlines.
@@ -61,7 +61,7 @@ bill.add_chapter(
 )
 ```
 
-### Legal Citation
+### Legal Citation:
 
 #### Structure: 
 
@@ -125,13 +125,15 @@ This also allows us to provide interesting session overview data -- "What laws w
 2. Formatting - State legal citation formats are extremely varied. See Note[2] for some examples. Rather than try to standardize them, I propose we just take the states citations as is and leave followup steps to the consumer.
 3. Codes/Laws are confusing. States handle rulemaking in a variety of formats -- Constitutions, Statutes, Codes, Administrative Registers, Administrative Rulemaking, etc. 
 Many states also split their lawmaking into multiple publications, e.g. "criminal code", "corporations code", "environmental code", etc. Rather than try to handle that extreme complexity for a few jurisdictions, plaintext citations have us punt it to the end consumer.
-4. Proposed legal citations don't seem to be available structured data in any states right now (TODO: are we sure?) so this would require regexing bill text which has historically not been a thing we've done in scrapers.
+4. Proposed legal citations don't seem to be available structured data in any states right now (TODO: are we sure?) so this would require regexing bill text which has historically not been a thing we've done in scrapers. I think it's still better to have the ability in the model.
 
-Backwards Compatibility Issues: None, except for one-time a mass 'updated at' change in the affected states.
+Backwards Compatibility Issues: None, except for one-time a mass 'updated at' change in the affected states as the scrapers are updated.
 
 ## Implementation Plan
 
 Tim adds the model to openstates-core, with some help from James on questions.
+
+James updates the poetry requirements and rolls new images, and does database migrations.
 
 Scraper writers add the functionality to states as desired. Tim would take the first shot at the known states.
 

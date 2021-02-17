@@ -14,8 +14,9 @@
 
 ## Abstract
 
-A number of jurisidictions offer metadata to link bills to the sections of the legal code that they will alter, or to the finished chaptered laws. We should modify the bills model to allow scraping this data.
+A number of jurisidictions offer metadata to link bills to the sections of the legal code that they will alter, or to the chaptered laws. We should modify the bills model to allow scraping this data.
 
+Note: There are many different legal structures that can be altered by bills. In this document, "legal code" will be used as shorthand for "collection of laws or rules modified by a bill", rather than strictly codes/register entries/constitutions, etc.
 
 ## Specification
 
@@ -24,20 +25,21 @@ Add 2 new underlying data structures as part of the bill model, a chapter citati
 These will be accessed via three methods:
 
 1. add_chapter()
-2. add_proposed_citation() -- TODO: Is there data for this?
-3. add_legal_citation()
+1. add_citation()
 
 ### Chapter Citation:
 
 A ```list``` of 0+ chapter ```dict```s
 
-```
-str - chapter 
-str - session
-optional datetimeoptional|str - effective
-optional datetimeoptional|str - expires
-optional url
-```
+
+- **chapter** - string - The jurisdiction's chapter laws reference. 
+- **session** - string - The session or year of the chapter law.  
+- **effective** - **optional** datetimeoptional|string - effective date
+- **expiration** - **optional** datetimeoptional|string - expiration date
+- **url** - **optional** string - Link to the URL of the chapter law or the redlines.
+
+
+Note that the "Chaptered Laws" of a given session, and a legal code that might have "chapters" aren't necessarily related. So 2019/CH24 may not modify chapter 24 of some title of the legal code.
 
 #### Examples
 
@@ -56,13 +58,13 @@ bill.add_chapter(
 
 A ```list``` of 0+ Citation ```dict```s
 
-```
-str - publication
-str - citation
-optional datetimeoptional|str - effective
-optional datetimeoptional|str - expires
-optional url
-```
+- **publication** - string - The affected publication. e.g. "Minnesota Statutes", "California Public Utilities Code", "DC Register", "Constitution of Nevada". Note that these cover a wide variety of different types of law and rule making.
+- **citation** - string - The reference to the (sub)section of the publication. Formats and abbreviations vary widely.
+- **type** - enum [proposed, final] - whether the citation is a part of a pending bill, or a final affected section after the bill as been made into law. The list of proposed citations may not match the final list due to changes between bill versions.
+- **effective** - **optional** datetimeoptional|string - effective date
+- **expiration** - **optional** datetimeoptional|string - expiration date
+- **url** - **optional** string - Link to the URL of the affected code
+
 
 #### Examples
 
@@ -70,9 +72,10 @@ optional url
 Cited to "Chapter 89, Article 4, Section 34", effective 08/01/20
 
 ```python
-bill.add_legal_citation(
+bill.add_citation(
     "Laws of Minnesota",
     "Chapter 89, Article 4, Section 34",
+    type="final",
     effective=datetime(2020, 08, 01)
     url="https://www.revisor.mn.gov/laws/2020/0/Session+Law/Chapter/89/"
 )
@@ -81,9 +84,10 @@ bill.add_legal_citation(
 If the bill modified multiple sections, we would call it multiple times. Note the actual example bill only targets one section, this is just an example:
 
 ```python
-bill.add_legal_citation(
+bill.add_citation(
     "Laws of Minnesota",
     "Chapter 89, Article 5, Section 50",
+    type="final",
     effective=datetime(2020, 08, 01)
     url="https://www.revisor.mn.gov/laws/2020/0/Session+Law/Chapter/89/"
 )
@@ -95,11 +99,10 @@ bill.add_legal_citation(
 bill.add_legal_citation(
     "DC Register",
     "Vol 67 and Page 14429",
+    type="final",
     expires=datetime(2021,03,06)
 )
 ```
-
-Proposed citations would work exactly as legal citations
 
 ## Rationale
 

@@ -20,7 +20,7 @@ A number of jurisdictions offer metadata to link bills to the sections of the le
 
 ## Specification
 
-Add a underlying data structures as part of the bill model, for a legal citation.
+Add a underlying data structure for a legal citation to the bill model.
 
 These will be accessed via a new method on the bill object:
 
@@ -122,13 +122,13 @@ This also allows us to provide interesting session overview data -- "What laws w
 ### Chapter Citations:
 
 Many jurisdictions keep a running list of all the bills that have become law in a session,
-often with effective dates and redlines to aid legal researchers. These are generally known as 'chaptered laws', and may or may not also link to the state codes.
+often with effective dates and redlines to aid legal researchers. These are generally known as 'chaptered laws', and may or may not also link to the state codes. Sometimes these are a holding area for laws to folded into state code(s) at a later date for something like an annual printing, but not always.
 
-Some states (MN) chapter things like budgets that aren't statutory, so there's a chapter law without a corresponding change to the legal code.
+Some states (MN) chapter things like budgets that aren't statutory, so there's a chapter law without a corresponding change to a legal code.
 
-Note that the "Chaptered Laws" of a given session, and a legal code that might have structural elements called "chapters" aren't necessarily related. So 2019/CH24 may not modify chapter 24 of some title of the legal code.
+Note that the "Chaptered Laws" of a given session, and a legal code that might have structural elements called "chapters" aren't necessarily related. So 2019/CH24 may not modify chapter 24 of some title of a legal code.
 
-[Example from MN](https://www.revisor.mn.gov/laws/2020/0/)
+[Example chapter list from MN](https://www.revisor.mn.gov/laws/2020/0/)
 
 
 ## Drawbacks

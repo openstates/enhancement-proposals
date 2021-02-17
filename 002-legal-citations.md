@@ -20,46 +20,11 @@ A number of jurisdictions offer metadata to link bills to the sections of the le
 
 ## Specification
 
-Add 2 new underlying data structures as part of the bill model, a chapter citation and a legal citation.
+Add a underlying data structures as part of the bill model, for a legal citation.
 
-These will be accessed via two methods:
+These will be accessed via a new method on the bill object:
 
-1. add_chapter()
 1. add_citation()
-
-### Chapter Citation:
-
-Many jurisdictions keep a running list of all the bills that have become law in a session,
-often with effective dates and redlines to aid legal researchers. These are generally known as 'chaptered laws', and may or may not also link to the state codes.
-
-[Example from MN](https://www.revisor.mn.gov/laws/2020/0/)
-
-#### Structure: 
-
-A ```list``` of 0+ chapter ```dict```s
-
-
-- **chapter** - string - The jurisdiction's chapter laws reference. 
-- **session** - string - The session or year of the chapter law. This may be distinct from the bill's "session", as some states split their chapter laws up by calendar year.
-- **effective** - **optional** datetimeoptional - effective date
-- **expiration** - **optional** datetimeoptional - expiration date
-- **url** - **optional** string - Link to the URL of the chapter law or the redlines.
-
-
-Note that the "Chaptered Laws" of a given session, and a legal code that might have "chapters" aren't necessarily related. So 2019/CH24 may not modify chapter 24 of some title of the legal code.
-
-#### Examples
-
-[2019 WY HB 4](https://wyoleg.gov/Legislation/2019/HB0004)
-Chaptered to CH0024 of 2019, Effective 7/1/2019
-
-```python
-bill.add_chapter(
-    name="CH0024",
-    session="2019",
-    effective=datetime(2019,07,01)
-)
-```
 
 ### Legal Citation:
 
@@ -69,33 +34,57 @@ A ```list``` of 0+ Citation ```dict```s
 
 - **publication** - string - The affected publication. e.g. "Minnesota Statutes", "California Public Utilities Code", "DC Register", "Constitution of Nevada". Note that these cover a wide variety of different types of law and rule making.
 - **citation** - string - The reference to the (sub)section of the publication. Formats and abbreviations vary widely.
-- **type** - enum [proposed, final] - whether the citation is a part of a pending bill, or a final affected section after the bill as been made into law. The list of proposed citations may not match the final list due to changes between bill versions.
+- **type** - enum [`proposed`, `chapter`, `final`, `other`] - whether the citation is a part of a pending bill, a chapter law, or a final affected section of some publication after the bill as been made into law. The list of proposed citations may not match the final list due to changes between bill versions. See the `Chapter Citations` section of rationale below for further discussion of chapter laws. `other` would cover corner cases such as a constitutional amendment that was passed by the legislature, but required a referendum as well.
 - **effective** - **optional** datetimeoptional - effective date
 - **expiration** - **optional** datetimeoptional - expiration date
 - **url** - **optional** string - Link to the URL of the affected code
 
-
 #### Examples
 
+[2019 WY HB 4](https://wyoleg.gov/Legislation/2019/HB0004)
+Chaptered to CH0024 of 2019, Effective 7/1/2019
+
+```python
+bill.add_chapter(
+    "Wyoming Chapter Laws of 2019",
+    "CH0024",
+    type="chapter",
+    effective=datetime(2019,07,01)
+)
+```
+
+
 [2020 MN HF 4285](https://www.revisor.mn.gov/bills/bill.php?b=house&f=HF4285&ssn=0&y=2020)
-Cited to "Chapter 89, Article 4, Section 34", effective 08/01/20
+Chaptered to "Chapter 89", modified a number of Statutes, effective 08/01/20
 
 ```python
 bill.add_citation(
-    "Laws of Minnesota",
-    "Chapter 89, Article 4, Section 34",
+    "Minnesota Session Laws, 2020",
+    "Chapter 89",
+    type="chapter",
+    effective=datetime(2020, 08, 01),
+    url="https://www.revisor.mn.gov/laws/2020/0/Session+Law/Chapter/89/",
+)
+
+bill.add_citation(
+    "Minnesota Statutes 2018",
+    "Chapter 27, Section 27",
     type="final",
     effective=datetime(2020, 08, 01)
     url="https://www.revisor.mn.gov/laws/2020/0/Session+Law/Chapter/89/"
 )
-```
 
-If the bill modified multiple sections, we would call it multiple times. Note the actual example bill only targets one section, this is just an example:
-
-```python
 bill.add_citation(
-    "Laws of Minnesota",
-    "Chapter 89, Article 5, Section 50",
+    "Minnesota Statutes 2018",
+    "Chapter 27, Section 13",
+    type="final",
+    effective=datetime(2020, 08, 01)
+    url="https://www.revisor.mn.gov/laws/2020/0/Session+Law/Chapter/89/"
+)
+
+bill.add_citation(
+    "Minnesota Statutes 2018",
+    "Chapter 27, Section 17",
     type="final",
     effective=datetime(2020, 08, 01)
     url="https://www.revisor.mn.gov/laws/2020/0/Session+Law/Chapter/89/"
@@ -113,11 +102,34 @@ bill.add_citation(
 )
 ```
 
+[MO 2020 HJR 104](https://house.mo.gov/Bill.aspx?bill=HJR104&year=2020&code=R) a (failed) constitutional amendment.
+
+```python
+bill.add_citation(
+    "Constitution of Missouri",
+    "Article X Section 6",
+    type="proposed",
+)
+```
+
 ## Rationale
 
 We want to be able to catch this both proactively -- "Tell me if a bill is introduced that would alter the California corporations code", and historically -- "Who sponsored the bill that made (X) a misdemeanor instead of a felony?".
 
 This also allows us to provide interesting session overview data -- "What laws were changed as a result of the 2019 session?", "What legislator introduced the most changes?".
+
+
+### Chapter Citations:
+
+Many jurisdictions keep a running list of all the bills that have become law in a session,
+often with effective dates and redlines to aid legal researchers. These are generally known as 'chaptered laws', and may or may not also link to the state codes.
+
+Some states (MN) chapter things like budgets that aren't statutory, so there's a chapter law without a corresponding change to the legal code.
+
+Note that the "Chaptered Laws" of a given session, and a legal code that might have structural elements called "chapters" aren't necessarily related. So 2019/CH24 may not modify chapter 24 of some title of the legal code.
+
+[Example from MN](https://www.revisor.mn.gov/laws/2020/0/)
+
 
 ## Drawbacks
 

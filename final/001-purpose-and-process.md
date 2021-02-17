@@ -4,7 +4,9 @@
 |--------------------|------------|
 | **Author(s)**      | @jamesturk |
 | **Implementer(s)** | @jamesturk |
-| **Status**         |   Draft    |
+| **Status**         |   Final    |
+| **Draft PR(s)**    |   n/a      |
+| **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/1 |
 | **Created**        | 2021-02-11 |
 | **Updated**        | 2021-02-11 | 
 
@@ -25,11 +27,12 @@ A proposal should have this structure:
 	- **Author(s), Implementer(s)**  - these can be multiple project members, implementer can be blank initially.
 	- **Created, Updated**: Updated should be updated when substantial changes are adopted.
 	- **Status**: Draft, Accepted, Rejected, Withdrawn, Final, Superseded
-	- **Requires, Replaces, Superseded-By**: all optional, but can be used to indicate relationships between proposals.
+	- **Draft PR**: Link to Draft PR discussion.
+	- **Approval PR**: Link to Approval PR discussion.
 3. **Abstract** - Concise summary of the proposal.
 4. **Specification** - Detailed description of how the proposal should work.
 5. **Rationale** - Explanation of why this would be a good idea.  The rationale should discuss considered alternatives and why they were rejected.
-6. **Backwards Compatibility** - A discussion of backwards compatibility, maintenance cost, etc.  *(Can be omitted or very simple in drafts.)*
+6. **Drawbacks** - A discussion of backwards compatibility, maintenance cost, etc.  *(Can be omitted or very simple in drafts.)*
 7. **Implementation Plan** - An estimate of what it would take to implement this.  *(Can be omitted or very simple in drafts.)*
 8. **Copyright** - Each proposal must end with a [CC0](https://creativecommons.org/publicdomain/zero/1.0/deed) dedication.
 
@@ -54,7 +57,7 @@ Once accepted as a draft, a full discussion will ensue.
 This repository should serve as the system of record for this discussion.
 (i.e. If a conversation requires a Slack conversation or similar, the results of that conversation should be attached to the relevant issue/PR)
 
-If fields like implementer, backwards compatibility notes, and implementation plan were not specified in the draft, they must be determined before a proposal can be accepted.
+If fields like implementer, drawbacks, and implementation plan were not specified in the draft, they must be determined before a proposal can be accepted.
 
 After any requisite back & forth, the active core team will submit their decision.
 All active core developers can review, with a goal of consensus, but in cases of indecision the project lead will make the final decision.
@@ -87,7 +90,7 @@ Most other improvements have come after either lengthy conversation or on a whim
 Alternatives could be to continue with the status quo or just using GitHub issues ad hoc.
 Both feel inferior to having a documented process around this.
 
-## Backwards Compatibility
+## Drawbacks
 
 n/a
 

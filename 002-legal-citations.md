@@ -105,7 +105,7 @@ bill.add_citation(
 [23rd Council DC 997](https://lims.dccouncil.us/Legislation/B23-0997) which results in a DC register entry in vol 67.
 
 ```python
-bill.add_legal_citation(
+bill.add_citation(
     "DC Register",
     "Vol 67 and Page 14429",
     type="final",

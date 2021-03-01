@@ -8,7 +8,7 @@
 | **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/14 |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Created**        | 2021-02-23 |
-| **Updated**        | 2021-02-23 | 
+| **Updated**        | 2021-03-01 | 
 
 ---
 
@@ -20,11 +20,12 @@ Introduce a public means by which we can improve and enhance legislator data, on
 
 I am proposing we build a public tool to handle common corrections to legislator data.  This tool would be used primarily by less technical volunteers that are not comfortable with the clone-edit YAML-PR workflow that currently exists.
 
-The tool is aimed at three types of issues in particular:
+The tool is aimed at four types of issues in particular:
 
 - adding details such as phone numbers, social media accounts, etc. to an individual or in bulk
 - retiring legislators that have left office
 - adding new one-off legislators that won special elections or appointments
+- adding sponsor/vote aliases to legislators
 
 It's important to note that not all issues will be considered.  For example:
 - an election has occurred and we need a full update
@@ -68,9 +69,19 @@ Pressing [Save] will create a **ChangeSet** with just this legislator's informat
 
 (As noted above, this is only intended to be used for 1-2 legislators that have been appointed, a full session turnover should be processed by scraping.)
 
+### Use Case 4: Adding Sponsor/Vote Aliases
+
+A separate view will be made available for the explicit purpose of showing unmatched sponsor & vote data.
+This view will allow contributors to select the matching legislator (or designate appropriate unmatched statuses as necessary).
+
+Pressing [Save] will create a **ChangeSet** that adds the sponsor/vote aliases to the appropriate legislators.
+
+
 ### Saving ChangeSets
 
 Each of the above actions saves data representing its delta to the existing legislator data.  These will be stored in a local database, and converted to a PR against the openstates/people repository.
+
+As the tool's UI allows, it may be possible to combine multiple ChangeSets into a single PR.
 
 The PR will:
 - provide ChangeSet represented in minimally-edited YAML

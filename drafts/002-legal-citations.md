@@ -130,6 +130,50 @@ Note that the "Chaptered Laws" of a given session, and a legal code that might h
 
 [Example chapter list from MN](https://www.revisor.mn.gov/laws/2020/0/)
 
+### Granularity of data
+
+A given citation may be provided at multiple levels of granularity; for example:
+
+```
+"Minnesota Statutes 2018, section 31"
+```
+
+vs 
+
+```
+"Minnesota Statutes 2018, section 31A.10",
+"Minnesota Statutes 2018, section 31A.14",
+"Minnesota Statutes 2018, section 31B.10-12"
+```
+
+There's often a comparatively simple first-pass approach that will yield the first result, while the second result requires a full-featured legal citation parser. The second approach also generally requires downloading and processing bill texts, which we prefer to keep seperate from the main bill scrapers for operational reasons. 
+
+Here we leave the granularity up the individual scraper and contributor, allowing for maximum flexibility at the cost of some uniformity. We want to collect the 'low hanging fruit' of references that are on pages we already routinely scrape or could easily collect without exploding the volume of scraper requests.
+
+If a future contributor wants to add a more fully featured legal parser to one or more scrapers, we would need to balance code complexity and scrape time against the value of the collected data. This could potentially be integrated via a new module, or a processing pipeline step that lived seperately from the existing scrapers.
+
+Further discussion of this issue can be found the initial draft's [pull request](https://github.com/openstates/enhancement-proposals/pull/9).
+
+### Formatting as open-text
+
+In line with the differing formats provided by jurisdictions, consumers have differing opinions on the most granular citations that are appropriate, and how they should be formatted.
+
+A structured approach was considered, for example:
+
+```
+{'chapter': '12', 'section': '23A', 'subsection': '3', 'paragraph': '1'}
+``` 
+
+One consumer maybe interested in the specific paragraph for redline purposes, while another may want to point to the subsection or even section for providing context around the change. 
+
+The large number of possible formats, and inconsistent naming ('title' lives at different levels across jursidictions, for example) makes writing parsers and validators for this impractical, particularly if end consumers are likely to re-parse this data anyway. 
+
+Requiring 'parsed' citations also significantly raises the barrier to entry to adding this data to a scraper, and likely increases scraper failures as new citation formats are encountered.
+
+Given these drawbacks, an unstructured string is a more effective format here.
+
+See the Formatting section in drawbacks for further details.
+
 
 ## Drawbacks
 
@@ -137,7 +181,7 @@ Note that the "Chaptered Laws" of a given session, and a legal code that might h
 2. Formatting - State legal citation formats are extremely varied. See Note[2] for some examples. Rather than try to standardize them, I propose we just take the states citations as is and leave followup steps to the consumer.
 3. Codes/Laws are confusing. States handle rulemaking in a variety of formats -- Constitutions, Statutes, Codes, Administrative Registers, Administrative Rulemaking, etc. 
 Many states also split their lawmaking into multiple publications, e.g. "criminal code", "corporations code", "environmental code", etc. Rather than try to handle that extreme complexity for a few jurisdictions, plaintext citations have us punt it to the end consumer.
-4. Proposed legal citations don't seem to be available structured data in any states right now (TODO: are we sure?) so this would require regexing bill text which has historically not been a thing we've done in scrapers. I think it's still better to have the ability in the model.
+4. Proposed legal citations don't seem to be available as structured data in any states right now so this would require regexing bill text which has historically not been a thing we've done in scrapers. I think it's still better to have the ability in the model.
 
 Backwards Compatibility Issues: None, except for one-time a mass 'updated at' change in the affected states as the scrapers are updated.
 

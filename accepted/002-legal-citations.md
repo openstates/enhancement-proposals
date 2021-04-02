@@ -4,7 +4,7 @@
 |--------------------|------------|
 | **Author(s)**      | Tim Showers |
 | **Implementer(s)** | Tim Showers |
-| **Status**         |   Draft    |
+| **Status**         |   Accepted  |
 | **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/9/ |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Created**        | 2020-02-17 |

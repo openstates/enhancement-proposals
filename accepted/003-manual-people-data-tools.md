@@ -4,11 +4,11 @@
 |--------------------|------------|
 | **Author(s)**      | James Turk |
 | **Implementer(s)** | James Turk |
-| **Status**         |   Draft    |
+| **Status**         |   Accepted |
 | **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/14 |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Created**        | 2021-02-23 |
-| **Updated**        | 2021-03-01 | 
+| **Updated**        | 2021-03-01 |
 
 ---
 

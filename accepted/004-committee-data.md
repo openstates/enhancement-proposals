@@ -8,7 +8,7 @@
 | **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/18 |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Created**        | 2021-03-31 |
-| **Updated**        | 2021-04-02 |
+| **Updated**        | 2021-04-22 |
 
 ---
 
@@ -51,7 +51,7 @@ The proposed path looks like this:
 
 ### Manual Data
 
-The existing organization schema will be updated to require either ID or name, if ID is required it will be used for linking, whereas name will serve as a placeholder for unlinked IDs.
+The existing organization schema will be updated to require either ID or name, if ID is present it will be used for linking, whereas name will serve as a placeholder for unlinked IDs.
 
 Initially we'll be focused on manual data that is not impacted by the scrapers, such as alternate names and links.  As such the tool that merges scraper output with the YAML will be focused on replacing member names with those found by the most recent scrape.
 

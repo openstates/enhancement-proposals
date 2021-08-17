@@ -5,6 +5,7 @@
 | **Author(s)**      | James Turk |
 | **Implementer(s)** | James Turk |
 | **Status**         |   Accepted |
+| **Issue**          | https://github.com/openstates/enhancement-proposals/issues/32 |
 | **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/14 |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Created**        | 2021-02-23 |

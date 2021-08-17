@@ -5,10 +5,11 @@
 | **Author(s)**      | TODO |
 | **Implementer(s)** | TODO |
 | **Status**         |   Draft    |
+| **Issue**          | https://github.com/openstates/enhancement-proposals/issues/TBD |
 | **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Created**        | TODO |
-| **Updated**        | TODO | 
+| **Updated**        | TODO |
 
 ---
 

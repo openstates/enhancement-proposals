@@ -8,7 +8,7 @@
 | **Draft PR(s)**    |   n/a      |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/1 |
 | **Created**        | 2021-02-11 |
-| **Updated**        | 2021-02-11 | 
+| **Updated**        | 2021-08-17 |
 
 ---
 
@@ -27,6 +27,7 @@ A proposal should have this structure:
 	- **Author(s), Implementer(s)**  - these can be multiple project members, implementer can be blank initially.
 	- **Created, Updated**: Updated should be updated when substantial changes are adopted.
 	- **Status**: Draft, Accepted, Rejected, Withdrawn, Final, Superseded
+	- **Issue**: To better track the current status of various proposals, all proposals must have a linked issue with the appropriate status tag.
 	- **Draft PR**: Link to Draft PR discussion.
 	- **Approval PR**: Link to Approval PR discussion.
 3. **Abstract** - Concise summary of the proposal.
@@ -36,11 +37,15 @@ A proposal should have this structure:
 7. **Implementation Plan** - An estimate of what it would take to implement this.  *(Can be omitted or very simple in drafts.)*
 8. **Copyright** - Each proposal must end with a [CC0](https://creativecommons.org/publicdomain/zero/1.0/deed) dedication.
 
+### Issue Status
+
+
 ### Process
 
-Submitting a proposal will take a little bit more planning than just opening a GitHub issue, but you can start there:
-
 **Drafting A Proposal**
+
+Submitting a proposal will take a little bit more planning than just opening a GitHub issue,
+but you can start there by opening a "pre-draft" issue if desired.
 
 Issues on this repository can be used as a form of proto-proposal in the early planning phase.
 No specific format is required, but these can be useful to gauge interest in a formal proposal if desired.
@@ -49,11 +54,11 @@ Small non-breaking changes and minor site & API enhancements will continue to be
 [openstates/issues](https://github.com/openstates/issues/issues) but larger feature requests and similar will be moved to this repository with a note explaining this process.
 
 When ready, draft proposals begin as PRs against this repository.
-Once a proposal meets the above criteria, it will be accepted as a draft proposal.  Discussion will take place on the GitHub PR.
+Once a proposal is deemed on-topic and in the above format, it will be accepted as a draft proposal.
 
 **Approval Phase**
 
-Once accepted as a draft, a full discussion will ensue. 
+Once accepted as a draft, a full discussion will ensue.
 This repository should serve as the system of record for this discussion.
 (i.e. If a conversation requires a Slack conversation or similar, the results of that conversation should be attached to the relevant issue/PR)
 
@@ -89,6 +94,8 @@ Most other improvements have come after either lengthy conversation or on a whim
 
 Alternatives could be to continue with the status quo or just using GitHub issues ad hoc.
 Both feel inferior to having a documented process around this.
+
+In August 2021, this proposal was updated to spell out the use of GitHub issues to track the current status of proposals.
 
 ## Drawbacks
 

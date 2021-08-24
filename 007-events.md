@@ -23,9 +23,32 @@ This proposal would restore events data to Open States' public data offerings.
 
 The existing events scrapers would regain "first class" status, and be run regularly (daily at least).
 
-The existing schema would be left intact, and Event importers would be restored.  Additional scrape jobs would be configured to run event scrapers regularly again & report failures similarly to how bill scrapers are configured today.
+The existing schema would be left mostly intact, and Event importers would be restored.  Additional scrape jobs would be configured to run event scrapers regularly again & report failures similarly to how bill scrapers are configured today.
 
 API v3 will be updated to include event data.   For now, OpenStates.org & API v2 will not be affected.
+
+Some changes will be introduced as part of this proposal:
+
+### Windowing
+
+In some states we have to select a date range to scrape, which currently leads to ad hoc code (as described by Tim here: https://github.com/openstates/enhancement-proposals/pull/28#issuecomment-898720989)
+
+To bring some sense of standardization to this, we will standardize on the following parameters:
+
+- `today` (default: today's date, can be overridden for testing purposes)
+- `days_before` (default: 30)
+- `days_after` (default: 90)
+
+All of which can be overridden on the command line.  A scraper that supports this interface will call a utility function with 
+these variables and obtain a `start_date` & `end_date` centered around the `today` value.  The obtained start/end dates should then be used by the scraper to window its request to the source.
+
+### Helper Methods
+
+The `openstates.scrape.Event` object will gain a couple of helper functions:
+
+* `Event.add_bill` which will add an agenda item with configurable placeholder text (if one does not exist already) and associate a bill with that item.  This will serve as a workaround to associate bills with events that do not have an appropriate agenda item already.
+* `Event.add_media_link` will gain a `classification` parameter to classify the type of media being added.  Options will include: 'video', 'audio', 'hosted video', 'hosted audio', 'youtube'.
+
 
 ## Rationale
 

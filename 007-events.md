@@ -9,7 +9,7 @@
 | **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Created**        | 2021-08-13 |
-| **Updated**        | TODO |
+| **Updated**        | 2021-08-30 |
 
 ---
 
@@ -28,6 +28,12 @@ The existing schema would be left mostly intact, and Event importers would be re
 API v3 will be updated to include event data.   For now, OpenStates.org & API v2 will not be affected.
 
 Some changes will be introduced as part of this proposal:
+
+### Schema Changes
+
+Events will gain the following optional fields:
+
+- `upstream_id`: This can be used to record an upstream identifier, such as a database identifier that can be obtained from the source data.  If present it will be used to uniquely identify events.  (This is distinct from dedupe_key which has no semantic meaning and can be a constructed value or URL.)
 
 ### Windowing
 

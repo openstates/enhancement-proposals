@@ -31,9 +31,15 @@ Some changes will be introduced as part of this proposal:
 
 ### Schema Changes
 
-Events will gain the following optional fields:
+Scraped Events will gain the following optional fields:
 
 - `upstream_id`: This can be used to record an upstream identifier, such as a database identifier that can be obtained from the source data.  If present it will be used to uniquely identify events.  (This is distinct from dedupe_key which has no semantic meaning and can be a constructed value or URL.)
+
+### Soft Deletes on Import
+
+To better address downstream user's needs, when future events can not be found in the current scrape nor reconciled via the standard means (`dedupe_key`, the new `upstream_id`, nor a match on the main attributes), the future event will be marked as `deleted` in the database.
+
+Deleted events will not be returned in the API response by default, but may be explicitly requested by clients.
 
 ### Windowing
 

@@ -4,12 +4,12 @@
 |--------------------|------------|
 | **Author(s)**      | @jamesturk |
 | **Implementer(s)** | @jamesturk |
-| **Status**         |   Draft    |
+| **Status**         |   Final    |
 | **Issue**          | https://github.com/openstates/enhancement-proposals/issues/26 |
 | **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/27 |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD |
 | **Created**        | 2021-08-13 |
-| **Updated**        | TODO |
+| **Updated**        | 2021-10-13 |
 
 ---
 

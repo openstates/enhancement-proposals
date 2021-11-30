@@ -1,4 +1,4 @@
-# OSEP 1: Purpose & Process
+# OSEP #1: Purpose & Process
 
 |                    |            |
 |--------------------|------------|

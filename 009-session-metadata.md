@@ -20,7 +20,7 @@ To ease creating new sessions and clean up the code, these should be stored in t
 
 ## Specification
 
-The in the `LegislativeSession` data model should be updated to allow an `extras` dict, to match the behavior of existing fields with 'extras'.
+The `LegislativeSession` data model should be updated to allow an `extras` dict, to match the behavior of existing fields with 'extras'.
 
 EX: The Alabama 2021 Regular session LegislativeSession would change from:
 

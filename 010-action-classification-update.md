@@ -14,16 +14,16 @@
 
 ## Abstract
 
-Action classification for bills largely happens inside of the scrape() method. I propose we isolate everything related to action classification in its own file for each jurisdiction. 
+Action classification for bills largely happens inside of the `scrape()` method (or somewhere within `bills.py`). I propose we isolate everything related to action classification in its own file for each jurisdiction. 
 
 ## Specification
-In this new design, all code related to action classification will be moved to a separate file. This will help untagle action classification from scraping, as well as make the scrape() methods simpler and easier to read.
+In this new design, all code related to action classification will be moved to a separate file (`actions.py`). This will help untagle action classification from scraping, as well as make the `scrape()`/`bills.py` methods simpler and easier to read.
 The contents of the action classification file should be standardized across jurisdictions to contain: 
 - a dictionary that matches action phrases from the bill to defined [OS classifications]([url](https://github.com/openstates/openstates-core/blob/5b16776b1882da925e8e8d5c0a07160a7d649c69/openstates/data/common.py#L87))
 - a function that takes in a phrase and returns the appropriate classification
 - anything else that is required for action classification
 
-For example, the mapping dictionary in the actions.py for Alaska would look like this:
+For example, the mapping dictionary in the `actions.py` for Alaska would look like this:
 ```
 _actions = {
     "bill action phrase": {"type": "string comparison or regex", "mappings": ["OS classification mapping"]},
@@ -34,7 +34,8 @@ _actions = {
 
 ## Rationale
 Action classification is hard because there are so many things that vary from jurisdiction to jurisdiction. By implementing these changes, we can help standardize the process, even if the content remains variable. 
-Additionally, moving all action classification code for each jurisdiction to its own actions.py will help simply the scrape() method, which can be very long and complex for some jurisdictions. 
+
+Additionally, moving all action classification code for each jurisdiction to its own `actions.py` will help simply the `scrape()` method/`bills.py`, which can be very long and complex for some jurisdictions. 
 
 
 ## Drawbacks

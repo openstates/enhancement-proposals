@@ -8,7 +8,7 @@
 | **Draft PR(s)**    |  ([#4152](https://github.com/openstates/openstates-scrapers/pull/4152)), ([#4154](https://github.com/openstates/openstates-scrapers/pull/4154)), ([#4155](https://github.com/openstates/openstates-scrapers/pull/4155))      |
 | **Approval PR(s)** |  |
 | **Created**        | 2022-03-11 |
-| **Updated**        | 2022-03-11 |
+| **Updated**        | 2022-25-11 |
 
 ---
 
@@ -18,50 +18,35 @@ Action classification for bills largely happens inside of the `scrape()` method 
 
 ## Specification
 In this new design, all code related to action classification will be moved to a separate file (`actions.py`). This will help untangle action classification from scraping, as well as make the `scrape()`/`bills.py` methods simpler and easier to read.
-The contents of the action classification file should be standardized across jurisdictions to contain: 
-- a dictionary that matches action phrases from the bill to defined ([OS classifications](https://github.com/openstates/openstates-core/blob/5b16776b1882da925e8e8d5c0a07160a7d649c69/openstates/data/common.py#L87)) with the action phrase as keys (ie "read for the first time"). The value of the keys would be a dictionary that contains:
-     - “Type” (how to match action classification phrase, currently either regex or string comparison). Ex: “Regex” or “Compare”
-     - “Mappings” (respective mapping from OS classifications). Ex: [“reading-1”, “introduction”]
 
-- a function that takes in a phrase and returns the appropriate classification
+The contents of the action classification file should be standardized across jurisdictions to utilize the [BaseCategorizer](https://github.com/openstates/openstates-scrapers/blob/070b9d4a77f835ecf369feb4399ebc71fac20bc1/scrapers/utils/actions.py#L62) and customize rules as appropriate. Regex patterns will match action phrases to defined [OS classifications](https://github.com/openstates/openstates-core/blob/5b16776b1882da925e8e8d5c0a07160a7d649c69/openstates/data/common.py#L87). 
+
+Every actions.py will contain:
+- custom [rules](https://github.com/openstates/openstates-scrapers/blob/070b9d4a77f835ecf369feb4399ebc71fac20bc1/scrapers/utils/actions.py#L6) that apply to the jurisdiction's bill language
+- a `categorize_action()` function that takes in a phrase and returns the appropriate classification utilizing the BaseCategorizer class
 - anything else that is required for action classification
 
-While classifying the action (in the `categorize_action()` function), we use the `type` dictionary value to determine whether we need to use regex or a simple string comparison to determine whether an identifying bill action phrase can be found within the bill action statement. 
 
-For example, the mapping dictionary in the `actions.py` for Alaska would look like this:
+Examples of Rules that could be found in an actions.py include:
 ``` python
-_actions = {
-    "bill action phrase": {
-        "type": "string comparison or regex", 
-        "mappings": ["OS classification mapping"]
-        },
-    "read the second time": {
-        "type": "compare", 
-        "mappings": ["reading-2"]
-        },
-    "^introduced": {
-        "type": "regex", 
-        "mappings": ["introduction"]
-        },
-    }
+    Rule(r"amendment not adopted", "amendment-failure"),
+    Rule(r"(?i)third reading, (?P<pass_fail>(passed|failed))", "reading-3"),
+    Rule(r"Read first time", "reading-1"),
+    Rule(r"(?i)first reading, referred to (?P<committees>.*)\.", "reading-1"),
+    Rule(r"(?i)And refer to (?P<committees>.*)", "referral-committee"),
 ```
 
 An example action classification function in a jurisdiction's `actions.py` would look like this: 
 ``` python
-def categorize_actions(action_description):
-    atype = []
-    for action_key, data in _actions.items():
-        # If regex is required to isolate bill action phrase
-        if data["type"] == "regex":
-            if re.search(action_key, action_description.lower()):
-                atype.extend(a for a in data["mappings"])
-
-        # Otherwise, we use basic string comparison
-        else:
-            if action_key in action_description.lower():
-                atype.extend(a for a in data["mappings"])
-
-    return atype
+    def categorize(self, text):
+        """Wrap categorize and add boilerplate committees."""
+        attrs = BaseCategorizer.categorize(self, text)
+        if "committees" in attrs:
+            committees = attrs["committees"]
+            for committee in re.findall(committees_rgx, text, re.I):
+                if committee not in committees:
+                    committees.append(committee)
+        return attrs
 ```
 
 ## Rationale

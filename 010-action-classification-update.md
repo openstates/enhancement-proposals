@@ -41,11 +41,6 @@ An example action classification function in a jurisdiction's `actions.py` would
     def categorize(self, text):
         """Wrap categorize and add boilerplate committees."""
         attrs = BaseCategorizer.categorize(self, text)
-        if "committees" in attrs:
-            committees = attrs["committees"]
-            for committee in re.findall(committees_rgx, text, re.I):
-                if committee not in committees:
-                    committees.append(committee)
         return attrs
 ```
 

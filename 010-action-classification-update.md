@@ -5,7 +5,7 @@
 | **Author(s)**      | @sruthivedantham |
 | **Implementer(s)** | @sruthivedantham |
 | **Status**         |      |
-| **Draft PR(s)**    |  ([#4152](https://github.com/openstates/openstates-scrapers/pull/4152)), ([#4154](https://github.com/openstates/openstates-scrapers/pull/4154)), ([#4155](https://github.com/openstates/openstates-scrapers/pull/4155))      |
+| **Draft PR(s)**    |  [#4182](https://github.com/openstates/openstates-scrapers/pull/4182)     |
 | **Approval PR(s)** |  |
 | **Created**        | 2022-03-11 |
 | **Updated**        | 2022-25-11 |

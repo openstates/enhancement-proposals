@@ -1,14 +1,14 @@
 # OSEP #11: Openstates Realtime Bill Imports
 
-|                    |                                                                   |
-|--------------------|-------------------------------------------------------------------|
-| **Author(s)**      | @elseagle                                                         |
-| **Implementer(s)** | @elseagle                                                         |
-| **Status**         | Done                                                              |
-| **Draft PR(s)**    | [#5](https://github.com/openstates/openstates-realtime/pull/5)    |
-| **Approval PR(s)** | [#5](https://github.com/openstates/openstates-realtime/pull/5)    |
-| **Created**        | 2023-01-06                                                        |
-| **Updated**        | 2022-25-20                                                        |
+|                    |                                                                |
+|--------------------|----------------------------------------------------------------|
+| **Author(s)**      | @elseagle                                                      |
+| **Implementer(s)** | @elseagle                                                      |
+| **Status**         | Done                                                           |
+| **Draft PR(s)**    | [#5](https://github.com/openstates/openstates-realtime/pull/5) |
+| **Approval PR(s)** | [#5](https://github.com/openstates/openstates-realtime/pull/5) |
+| **Created**        | 2023-01-06                                                     |
+| **Updated**        | 2023-01-20                                                     |
 
 ______________________________________________________________________
 

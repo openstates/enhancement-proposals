@@ -41,7 +41,7 @@ into it's different Committee elements such as Chamber & Type and then incorpora
 logic. This will be a bit messier, so we could also add `other_names` to Committee files to more easily match up against
 what is commonly scraped like we did [for MN](https://github.com/openstates/people/pull/1442/files) when Events were
 "missing" because of name mismatching & update the `limit_spec` logic to check for more than the first `other_name`
-string. This is the preferred route since we can update the Legistorm to OS People script to include the other formats
+string. This is the preferred route since we can update the Committee script to include the other formats
 of the name without work from Engineering & Product to write to hundreds of files & we can incorporate multiple name
 formats easily to accommodate however the source may be posting the Committees (ex: 'Committee on Ending Homelessness'
 as a Bill Sponsor vs 'House Ending Homelessness' on Events, etc.)
@@ -106,8 +106,8 @@ have unmatched People that are actually Committees)
 - Ensure `bill_identifier` matches the format of the expected Bill per jurisdiction
 
 Elsewhere:
-- Update LS to OS Script to include `other_names` for Committees that include Chamber, Type, & Both
-- Update LS to OS Script to include name values that may be overwritten as `other_name` options
+- Update Committee Script to include `other_names` for Committees that include Chamber, Type, & Both
+- Update People Script to include name values that may be overwritten as `other_name` options
 
 ## Copyright
 

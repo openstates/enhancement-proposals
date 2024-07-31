@@ -2,8 +2,8 @@
 
 |                    |                                                                |
 |--------------------|----------------------------------------------------------------|
-| **Author(s)**      | @newageairbender                                         |
-| **Implementer(s)** | Rylie, Jesse, Alex                                             |
+| **Author(s)**      | @newageairbender                                               |
+| **Implementer(s)** | @newageairbender, @jessemortenson, @alexobaseki                              |
 | **Status**         | Draft                                                          |
 | **Issue**          | https://github.com/openstates/enhancement-proposals/issues/TBD |
 | **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/TBD   |
@@ -110,7 +110,8 @@ identify the Bill match better, but could also incorporate a LLM so will be test
 
 #### Solutions:
 - Scrapers: Ensure `bill_identifier` matches the format of the expected Bill per jurisdiction
-- Core: Bill Identifier match improvements, passing in more data (at least `session`)
+- Core: Bill Identifier match improvements, passing in more data (at least `session`, maybe `chamber`)
+- Core: Add LLM to try better matching with above Core improvement
 - Core: Potentially cli command to try matching Events with Unmatched Bills in their agendas to Bills post-import
 
 ## Rationale
@@ -120,6 +121,17 @@ We've known that matching Bills or Votes to Sponsors has been tricky for a while
 of the issues with mismatching legislators. The People Matcher Tool can only get us so far, since we run into a blocker
 when there are legislators with the same last name in a jurisdiction or the sponsor is actually a committee, where
 adding an `other_name` to a person's yaml file isn't a possible fix.
+
+Current example for matching a Person to a Bill Sponsor:
+- Bill scraper calls `add_sponsorship` passing in { "name": "JOHNSON", entity_type="person", "classification"="primary",
+"primary"=True }
+- `add_sponsorship` creates a `pseudo_person_id` that is JOHNSON
+- BillImport calls `resolve_person` passing in that `pseudo_person_id` with start/end date values from the Bill's `session`
+- [resolve_person](https://github.com/openstates/openstates-core/blob/7ac7b73bbb0956f7a539128f9186929509c19550/openstates/importers/base.py#L526)
+constructs a spec that is used to compose filters to query data from the Person model to find a match. Could pass in
+`org_classification` but currently don't to narrow down via chamber
+- If jurisdiction has more than one legislator with the last name "Johnson", Importer will give an error message that
+`multiple people returned for spec` but continue through Import task
 
 ### Events to Committees
 A similar issue has been happening with matching Events to their Participants (typically a Committee). The scraped name

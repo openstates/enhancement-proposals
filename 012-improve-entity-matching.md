@@ -9,7 +9,7 @@
 | **Draft PR(s)**    | https://github.com/openstates/enhancement-proposals/pull/TBD   |
 | **Approval PR(s)** | https://github.com/openstates/enhancement-proposals/pull/TBD   |
 | **Created**        | 2024-07-01                                                     |
-| **Updated**        | 2024-07-18                                                     |
+| **Updated**        | 2024-07-31                                                     |
 
 ---
 
@@ -27,20 +27,41 @@ the query results returned on import.
 To help resolve People mismatching, there is already an option to pass in an `org_classification` to the
 [resolve_person](https://github.com/openstates/openstates-core/blob/ac8e53aefe2a70d8ff360fc8b641bf77f28e2d7c/openstates/importers/base.py#L526)
 function on the `BaseImporter` that is used to query & match People to Bills, Events, & Votes. If the
-`org_classification` isn't set, it just defaults to a combination of `upper`, `lower`, & `legislature`. If we ensure
+`org_classification` isn't set, it just defaults to any match of `upper`, `lower`, & `legislature`. If we ensure
 that an `org_classification` can be passed in from where it's used in the Bill, Event, & Vote importers, we should be
 able to alleviate some of that mismatching. There may need to be some scraper updates to ensure that the classification
 is correct, like a Bill getting sponsors added from the opposite chamber than it was introduced in, but for Votes where
 the voting body is either a Chamber or a Committee, we can narrow down People by classification based off of that voting
 body with more accuracy. Because of this, we should start with adding the `org_classification` to Events & Votes before
-tackling Bills. When we get to Bills, `chamber` is already a passable value on [add_sponsorship](https://github.com/openstates/openstates-core/blob/ac8e53aefe2a70d8ff360fc8b641bf77f28e2d7c/openstates/scrape/bill.py#L105)
-so it'll be mostly scraper work to ensure that the correct chamber is being passed in per sponsorship.
+tackling Bills. 
+
+When we get to Bills, `chamber` is already a passable value on [add_sponsorship](https://github.com/openstates/openstates-core/blob/ac8e53aefe2a70d8ff360fc8b641bf77f28e2d7c/openstates/scrape/bill.py#L105),
+so it'll be mostly scraper work to ensure that the correct chamber is being passed in per sponsorship. For example,
+scrapers should be updated to include logic around if Representative or Senator is listed on the Sponsor's name to
+designate chamber or where House vs Senate have grouped names like in [IL](https://ilga.gov/legislation/BillStatus.asp?DocNum=4910&GAID=17&DocTypeID=HB&LegId=152782&SessionID=112&GA=103),
+we can be certain on chamber to pass in for`org_classification`, etc.
+
+We also should consider adding nicknames of People to `other_names` in the yaml files through the People script so we
+can catch matches when the name may not be exactly as scraped if the person goes by multiple first names or includes
+their middle name/initial in some places to differentiate from people with other names.
+
+#### Solutions:
+- Core: Adding `org_classification` to Events & Votes from where `resolve_person` is being used on Import
+- Core: Add `org_classification` to Bill Import for Sponsors, but may need to be after scraper improvements if
+jurisdictions have sponsors from both chamber per Bill
+- Scrapers: Ensure correct `chamber` is passed in with `add_sponsorship` on Bill Scrapes
+- People Script: Update People Script to include name values that may be overwritten as `other_name` options
+- People Repo: Add `other_name` values that match scraped name formats for sponsorship or votes
 
 ### Committees as Bill Sponsors
 In resolving Committees as Bill Sponsors, there's logic that should be able to match in the `BillImporter`'s
 [prepare_for_db](https://github.com/openstates/openstates-core/blob/ac8e53aefe2a70d8ff360fc8b641bf77f28e2d7c/openstates/importers/bills.py#L147)
 function, so need to ensure that scrapers are checking if the Sponsor is a Person or Organization & make sure that is
-being correctly passed in as the `entity_type` in `add_sponsorship()`.
+being correctly passed in as the `entity_type` in `add_sponsorship()`. The only fix needed is in the scrapers themselves.
+
+#### Solution:
+- Scrapers: Ensure correct `entity_type` is passed in with `add_sponsorship` on Bill Scrapes (just need to check which
+states have unmatched People that are actually Committees)
 
 ### Committees on Events
 Similarly, in helping resolve Committees, we can improve the matching query by cleaning or splitting up the scraped name
@@ -54,6 +75,11 @@ of the name without work from Engineering & Product to write to hundreds of file
 formats easily to accommodate however the source may be posting the Committees (ex: 'Committee on Ending Homelessness'
 as a Bill Sponsor vs 'House Ending Homelessness' on Events, etc.)
 
+#### Solutions:
+- Core: Fix `limit_spec` on the `OrganizationImporter` so that more than just the first string in `other_names` is checked for
+Committees
+- People Script: Update Committee Script to include `other_names` for Committees that include Chamber, Type, & Both
+
 ### Bill Matching to Event Agenda Items
 When it comes to matching Bills to Agenda Items on Events, I'm a little more fuzzy. Right now we have a [resolve_bill](https://github.com/openstates/openstates-core/blob/ac8e53aefe2a70d8ff360fc8b641bf77f28e2d7c/openstates/importers/base.py#L164)
 function on the `BaseImporter` that attempts to match Bills via `bill_id`, `jurisdiction_id`, & `date` if it gets passed,
@@ -61,6 +87,11 @@ which seems like it could be improved by incorporating some of the logic in `res
 this spring where the match query is also narrowed down by `session_id`. We can certainly pass in more data to try to
 identify the Bill match better, but could also incorporate a LLM so will be testing out different approaches.
 
+#### Solutions:
+- Scrapers: Ensure `bill_identifier` matches the format of the expected Bill per jurisdiction
+- Core: Bill Identifier match improvements, passing in more data but also could incorporate AI assistance 
+- Core: Potentially cli command to try matching Events with Unmatched Bills in their agendas to Bills like we have with
+Resolving Bill Relationships
 
 ## Rationale
 
@@ -78,7 +109,7 @@ we've come to a standard expectation for the OS People repo that Committees will
 committee type since those are able to be derived from data in the yaml file, this should make it easier to match with
 if we can narrow the match query based on those attributes.
 
-#### Events to Bills
+### Events to Bills
 Another area where we're struggling to match entities is Events to the Bills listed in their Agenda Items. Sometimes
 it's clearly because the scraped bill id format is different from how the Bill gets saved, but sometimes it's less clear
 as to why some Bills get matched but others don't. Occasionally, there may be a Bill that doesn't exist in OS yet but
@@ -90,31 +121,13 @@ is in the system.
 Should absolutely add defaults if we're not certain what's going to be passed in on `core` updates.
 
 ## Implementation Plan
+Most are listed above with the entity types they fix, but other plans included below
 
-### Setup
+#### Setup
 - Pull numbers for average percent matched per data type, also broken down per jurisdiction
 - Create harnesses to try & limit testing scope per data type. Can include bug tickets for specific jurisdictions
 - Create shared database for running tests on improvements
 - Insights team tests to see if we can use AI to help match more entities
-
-### Core Improvements
-- Adding `org_classification` to Events & Votes from where `resolve_person` is being used on Import, same with Bills
-but Bills may need to be after scraper improvements
-- Fix `limit_spec` on the `OrganizationImporter` so that more than just the first string in `other_names` is checked for
-Committees
-- Bill Identifier match improvements, passing in more data but also could incorporate AI assistance
-- Potentially cli command to try matching Events with Unmatched Bills in their agendas to Bills like we have with
-Resolving Bill Relationships
-
-### Scraper Improvements
-- Ensure correct `chamber` is passed in with `add_sponsorship` on Bill Scrapes
-- Ensure correct `entity_type` is passed in with `add_sponsorship` on Bill Scrapes (just need to check which states
-have unmatched People that are actually Committees)
-- Ensure `bill_identifier` matches the format of the expected Bill per jurisdiction
-
-### Elsewhere
-- Update Committee Script to include `other_names` for Committees that include Chamber, Type, & Both
-- Update People Script to include name values that may be overwritten as `other_name` options
 
 ## Copyright
 

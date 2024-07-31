@@ -2,7 +2,7 @@
 
 |                    |                                                                |
 |--------------------|----------------------------------------------------------------|
-| **Author(s)**      | Rylie @newageairbender                                         |
+| **Author(s)**      | @newageairbender                                         |
 | **Implementer(s)** | Rylie, Jesse, Alex                                             |
 | **Status**         | Draft                                                          |
 | **Issue**          | https://github.com/openstates/enhancement-proposals/issues/TBD |
@@ -46,7 +46,8 @@ can catch matches when the name may not be exactly as scraped if the person goes
 their middle name/initial in some places to differentiate from people with other names.
 
 #### Solutions:
-- Core: Adding `org_classification` to Events & Votes from where `resolve_person` is being used on Import
+- Core: Adding `org_classification` to Events & Votes from where `resolve_person` is being used on Import based on data
+provided on the scrape
 - Core: Add `org_classification` to Bill Import for Sponsors, but may need to be after scraper improvements if
 jurisdictions have sponsors from both chamber per Bill
 - Scrapers: Ensure correct `chamber` is passed in with `add_sponsorship` on Bill Scrapes
@@ -67,13 +68,33 @@ states have unmatched People that are actually Committees)
 Similarly, in helping resolve Committees, we can improve the matching query by cleaning or splitting up the scraped name
 into it's different Committee elements such as Chamber & Type and then incorporating that into the `OrganizationImporter`
 [limit_spec](https://github.com/openstates/openstates-core/blob/ac8e53aefe2a70d8ff360fc8b641bf77f28e2d7c/openstates/importers/organizations.py#L11)
-logic. This will be a bit messier, so we could also add `other_names` to Committee files to more easily match up against
-what is commonly scraped like we did [for MN](https://github.com/openstates/people/pull/1442/files) when Events were
-"missing" because of name mismatching & update the `limit_spec` logic to check for more than the first `other_name`
+logic. This will be a bit messier, so I nominate that we add `other_names` to Committee files to more easily match up 
+against what is commonly scraped like we did [for MN](https://github.com/openstates/people/pull/1442/files) when Events
+were "missing" because of name mismatching & update the `limit_spec` logic to check for more than the first `other_name`
 string. This is the preferred route since we can update the Committee script to include the other formats
 of the name without work from Engineering & Product to write to hundreds of files & we can incorporate multiple name
 formats easily to accommodate however the source may be posting the Committees (ex: 'Committee on Ending Homelessness'
 as a Bill Sponsor vs 'House Ending Homelessness' on Events, etc.)
+
+Currently, the `limit_spec` function is used to overwrite the Django default to limit the query parameters. As of right
+now, the function:
+- If classification is NOT party, then add the jurisdiction_id to the query spec
+- if name is set, match on (the rest of the spec) AND (first other_names value matches name) OR (name is exact match)
+- if name is NOT set, then just match on rest of spec
+
+IF we go the `other_name` route, the change we'd need to make is:
+- If name is set, match on (the rest of the spec) AND (~~first~~ANY other_names value matches name) OR (name is exact match)
+
+IF we wanted to split up by chamber & type first in `core`, we'd have to add:
+- Update [add_participant](https://github.com/openstates/openstates-core/blob/7ac7b73bbb0956f7a539128f9186929509c19550/openstates/scrape/event.py#L140)
+and `add_committee` to accept a `chamber` value or `committee_type` of `committee` or `subcommittee` (if `subcommittee`,
+add `parent_committee_id`)
+- Add that `chamber` value to the `self.org_importer.resolve_json_id` calls in the `EventImporter` on lines [92](https://github.com/openstates/openstates-core/blob/ac8e53aefe2a70d8ff360fc8b641bf77f28e2d7c/openstates/importers/events.py#L92)
+and 101
+- In `limit_scope` if classification is `committee`, then add the `chamber_id` to query spec
+- In `limit_scope` if classification is `committee`, then add the `committee_type` to query spec
+- In `limit_scope` if classification is `committee` AND `committee_type` = `subcommittee`, then add the 
+`parent_committee_id` to query spec
 
 #### Solutions:
 - Core: Fix `limit_spec` on the `OrganizationImporter` so that more than just the first string in `other_names` is checked for
@@ -89,9 +110,8 @@ identify the Bill match better, but could also incorporate a LLM so will be test
 
 #### Solutions:
 - Scrapers: Ensure `bill_identifier` matches the format of the expected Bill per jurisdiction
-- Core: Bill Identifier match improvements, passing in more data but also could incorporate AI assistance 
-- Core: Potentially cli command to try matching Events with Unmatched Bills in their agendas to Bills like we have with
-Resolving Bill Relationships
+- Core: Bill Identifier match improvements, passing in more data (at least `session`)
+- Core: Potentially cli command to try matching Events with Unmatched Bills in their agendas to Bills post-import
 
 ## Rationale
 
